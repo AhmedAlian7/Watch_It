@@ -1,0 +1,20 @@
+.white-background{
+-fx-background-color: #fff;
+}
+
+.transparent{
+-fx-background-color: rgba(0,0,0,8);
+}
+
+.round-layout{
+-fx-border-radius: 50;
+-fx-border-color: #070707;
+}
+
+.selected{
+-fx-background-color: #1A1A1A
+}
+
+.mouse-moved: hover{
+-fx-background-color: #0F0F0F;
+}

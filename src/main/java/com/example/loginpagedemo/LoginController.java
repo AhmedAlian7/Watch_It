@@ -35,14 +35,14 @@ public class LoginController {
     private TextField tfPasswword;
 
 
+
     public void btnSignIn_Clicked(ActionEvent e) throws IOException {
 
         String Username = tfUsername.getText();
         String Password = pfPassword.getText();
 
         if (tfUsername.getText().isEmpty() || pfPassword.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error!",
-                    "Please enter your  username and password");
+            MessageBox.showError("Error","Enter your username and password");
             return;
         }
 
@@ -55,10 +55,11 @@ public class LoginController {
         }
 
         if (user != null) {
-            infoBox("Login Successful!", null, "Success");
+            MessageBox.showConfirmation( "Success","Login Successful!");
         }
         else {
-            infoBox("Please enter correct username and Password", null, "Failed");
+            MessageBox.showError( "Failed","Wrong username or password !");
+            return;
         }
 
         Global.CurrentUser = user;
@@ -93,21 +94,4 @@ public class LoginController {
         stage.show();
     }
 
-
-
-private static void showAlert (Alert.AlertType alertType, String title, String message){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.show();
-    }
-
-    public static void infoBox (String infoMessage, String headerText, String title){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText(infoMessage);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.showAndWait();
-    }
 }
