@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import watchIt.Movie;
 
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml")); // Should load Scene1.fxml
+        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); // Should load Scene1.fxml
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

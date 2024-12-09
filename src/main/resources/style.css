@@ -3,7 +3,7 @@
 }
 
 .transparent{
--fx-background-color: rgba(0,0,0,8);
+-fx-background-color: #1E1F22;
 }
 
 .round-layout{
@@ -17,4 +17,8 @@
 
 .mouse-moved: hover{
 -fx-background-color: #0F0F0F;
+}
+
+.shadow{
+-fx-effect: dropShadow(three-pass-box, rgba(8,8,8,0.1), 10, 8 , 8, 10);
 }
