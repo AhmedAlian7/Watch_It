@@ -1,10 +1,12 @@
 package watchIt;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
-
+import java.util.List;
 
 
 public class Movie implements Serializable {
@@ -23,6 +25,8 @@ public class Movie implements Serializable {
     private int Rating;
     private int Views;
     private String PosterSrc;
+
+    public static  ArrayList<Movie> Movies;
 
     public String getPosterSrc() {
         return PosterSrc;
@@ -77,11 +81,8 @@ public class Movie implements Serializable {
         Revenue = 0;
         Rating = 0;
         Views = 0;
-    }
-    public Movie(String title, String posterSrc) {
-        Id = count++;
-        Title = title;
-        PosterSrc = posterSrc;
+
+        Movies = LoadMovieFromFile();
     }
 
     public static ArrayList<Movie> LoadMovieFromFile()
@@ -121,7 +122,7 @@ public class Movie implements Serializable {
 
         for(Movie movie : Movies)
         {
-            if(movie.getTitle().equals(movieTitle))
+            if(movie.getTitle().equalsIgnoreCase(movieTitle))
             {
                 return movie;
             }
@@ -181,7 +182,7 @@ public class Movie implements Serializable {
             return false;
     }
 
-    public static ArrayList<Movie> TopViewedMovies()
+    public static ArrayList<Movie> getMostViewedMovie()
     {
         ArrayList<Movie> Movies = LoadMovieFromFile();
         ArrayList<Movie> TopFiveMovies = new ArrayList<>();
@@ -192,6 +193,48 @@ public class Movie implements Serializable {
             TopFiveMovies.add(sortedMovies.get(i));
         }
         return TopFiveMovies;
+    }
+    public static ArrayList<Movie> getRecentMovies()
+    {
+        ArrayList<Movie> movies = LoadMovieFromFile();
+        ArrayList<Movie> recentMovies = new ArrayList<>();
+
+        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
+
+        for (Movie movie : movies) {
+            if (movie.getReleaseDate().isAfter(oneMonthAgo)) {
+                recentMovies.add(movie);
+            }
+        }
+
+        recentMovies.sort(new Comparator<Movie>() {
+            @Override
+            public int compare(Movie m1, Movie m2) {
+                return m2.getReleaseDate().compareTo(m1.getReleaseDate());
+            }
+        });
+
+        return recentMovies;
+
+    }
+
+    public static List<Movie> getTopRatedMovies(int limit) {
+        List<Movie> movies = Movies;
+        List<Movie> topRatedMovies = new ArrayList<>(movies);
+
+        // Sort movies by rating in descending order
+        topRatedMovies.sort(new Comparator<Movie>() {
+            @Override
+            public int compare(Movie m1, Movie m2) {
+                return Integer.compare(m2.getRating(), m1.getRating());
+            }
+        });
+
+        if (topRatedMovies.size() > limit) {
+            return topRatedMovies.subList(0, limit);
+        }
+
+        return topRatedMovies;
     }
 
 }

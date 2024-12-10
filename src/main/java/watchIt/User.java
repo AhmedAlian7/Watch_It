@@ -13,6 +13,10 @@ public class User implements Serializable {
     private String Email;
     private Subscription.enPlan subscriptionType;
 
+    private ArrayList<Movie> WatchedMovies;
+    private ArrayList<Movie> WatchLaterMovies;
+
+
     public Subscription.enPlan getSubscriptionType() {
         return subscriptionType;
     }
@@ -145,16 +149,5 @@ public class User implements Serializable {
     }
 
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "ID=" + ID +
-                ", Username='" + Username + '\'' +
-                ", Password='" + Password + '\'' +
-                ", FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
-                ", Email='" + Email + '\'' +
-                ", subscriptionType=" + subscriptionType +
-                '}';
-    }
+
 }

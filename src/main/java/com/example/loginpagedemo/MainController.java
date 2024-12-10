@@ -21,7 +21,8 @@ public class MainController implements Initializable {
     private ArrayList<Movie> recentMovies;
     private ArrayList<Movie> MostViewsMovies;
 
-
+    @FXML
+    private Label lblUserName;
     @FXML
     private HBox CardLayout;
     @FXML
@@ -30,10 +31,11 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        lblUserName.setText(Global.CurrentUser.getFullName());
         int column = 8;
         int row = 1;
-
-        MostViewsMovies = Movie.TopViewedMovies();
+        recentMovies = Movie.getRecentMovies();
+        MostViewsMovies = Movie.getMostViewedMovie();
         try {
             for (Movie value : recentMovies) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
