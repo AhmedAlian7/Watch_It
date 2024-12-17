@@ -4,4 +4,5 @@ module com.example.loginpagedemo {
     requires java.desktop;
     opens com.example.loginpagedemo to javafx.fxml;
     exports com.example.loginpagedemo;
+    exports watchIt;
 }

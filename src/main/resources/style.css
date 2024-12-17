@@ -22,3 +22,27 @@
 .shadow{
 -fx-effect: dropShadow(three-pass-box, rgba(8,8,8,0.1), 10, 8 , 8, 10);
 }
+
+.transparent1{
+-fx-background-color: #28252E;
+}
+
+.text-white {
+    color: white;
+}
+.black-background{
+-fx-background-color: #28252E;
+}
+
+.my-button {
+
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.my-button:hover {
+    /*-fx-background-color: #0F0F0F;*/
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}

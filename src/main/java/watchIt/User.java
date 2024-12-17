@@ -16,6 +16,8 @@ public class User implements Serializable {
     private ArrayList<Movie> WatchedMovies;
     private ArrayList<Movie> WatchLaterMovies;
 
+    private UserWatchRecord userWatchRecord;
+
 
     public Subscription.enPlan getSubscriptionType() {
         return subscriptionType;
@@ -125,8 +127,21 @@ public class User implements Serializable {
         }
         return null;
     }
+    public static User Find(int ID) throws IOException {
+        ArrayList<User> users = LoadUsersFromFile();
+
+        for (User user : users) {
+            if (user.ID == ID)
+                return user;
+        }
+        return null;
+    }
     public static boolean isUserExist(String Username) throws IOException {
         User user = Find(Username);
+        return (user != null);
+    }
+    public static boolean isUserExist(int ID) throws IOException {
+        User user = Find(ID);
         return (user != null);
     }
     public static boolean isUserExist(String Username, String Password) throws IOException {
@@ -147,6 +162,19 @@ public class User implements Serializable {
 
         return true;
     }
+
+    public static boolean Delete(int ID) throws IOException {
+
+        ArrayList<User> users = LoadUsersFromFile();
+
+        User user = Find(ID);
+
+        if (user == null)
+            return false;
+
+        users.remove(user);
+        saveUsersDataToFile(users);
+        return true;    }
 
 
 

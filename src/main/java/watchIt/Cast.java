@@ -11,6 +11,7 @@ public class Cast extends Person implements Serializable {
     private ArrayList<Movie> ListOfMovies;
     private HashMap<String, String> SocialMediaLinks;
 
+    public Cast() {}
 
     public Cast(String firstName, String lastName, LocalDate dateOfBirth, Person.enGender gender,String nationality)
     {

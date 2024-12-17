@@ -66,18 +66,18 @@ public class UserWatchRecord implements Serializable {
         return new ArrayList<>();
     }
 
-    public static List<Movie> getRecommendedMoviesForUser(int userID) {
-
-        Map<String, Integer> favoriteGenres = getFavoriteGenres(userID);
-        Map<String, Integer> mostWatchedActors = getMostWatchedActors(userID);
-        Set<Movie> recommendedMovies = findRecommendedMovies(favoriteGenres, mostWatchedActors);
-
-        // Convert to list and sort by release date (most recent first)
-        List<Movie> sortedRecommendations = new ArrayList<>(recommendedMovies);
-        sortMoviesByReleaseDate(sortedRecommendations);
-
-        return sortedRecommendations;
-    }
+//    public static List<Movie> getRecommendedMoviesForUser(int userID) {
+//
+//        Map<String, Integer> favoriteGenres = getFavoriteGenres(userID);
+//        Map<String, Integer> mostWatchedActors = getMostWatchedActors(userID);
+//        Set<Movie> recommendedMovies = findRecommendedMovies(favoriteGenres, mostWatchedActors);
+//
+//        // Convert to list and sort by release date (most recent first)
+//        List<Movie> sortedRecommendations = new ArrayList<>(recommendedMovies);
+//        sortMoviesByReleaseDate(sortedRecommendations);
+//
+//        return sortedRecommendations;
+//    }
     private static Map<String, Integer> getFavoriteGenres(int userId) {
         List<UserWatchRecord> watchRecords = loadWatchRecordsFromFile();
         Map<String, Integer> genreCount = new HashMap<>();
@@ -91,53 +91,53 @@ public class UserWatchRecord implements Serializable {
 
         return genreCount;
     }
-    private static Map<String, Integer> getMostWatchedActors(int userId) {
-        List<UserWatchRecord> watchRecords = loadWatchRecordsFromFile();
-        Map<String, Integer> actorCount = new HashMap<>();
-
-        for (UserWatchRecord record : watchRecords) {
-            if (record.getUserId() == userId) {
-                List<String> cast = record.getMovie().getCast();
-                if (cast != null) {
-                    for (String actor : cast) {
-                        actorCount.put(actor, actorCount.getOrDefault(actor, 0) + 1);
-                    }
-                }
-            }
-        }
-
-        return actorCount;
-    }
-    private static Set<Movie> findRecommendedMovies(Map<String, Integer> favoriteGenres, Map<String, Integer> mostWatchedActors) {
-        List<Movie> allMovies = Movie.LoadMovieFromFile();
-        Set<Movie> recommendedMovies = new HashSet<>();
-
-        for (Movie movie : allMovies) {
-            if (favoriteGenres.containsKey(movie.getGenre())) {
-                recommendedMovies.add(movie);
-            }
-
-            List<String> cast = movie.getCast();
-            if (cast != null) {
-                for (String actor : cast) {
-                    if (mostWatchedActors.containsKey(actor)) {
-                        recommendedMovies.add(movie);
-                        break; // Avoid adding the same movie multiple times
-                    }
-                }
-            }
-        }
-
-        return recommendedMovies;
-    }
-    private static void sortMoviesByReleaseDate(List<Movie> movies) {
-        movies.sort(new Comparator<Movie>() {
-            @Override
-            public int compare(Movie m1, Movie m2) {
-                return m2.getReleaseDate().compareTo(m1.getReleaseDate()); // Compare in reverse order
-            }
-        });
-    }
+//    private static Map<String, Integer> getMostWatchedActors(int userId) {
+//        List<UserWatchRecord> watchRecords = loadWatchRecordsFromFile();
+//        Map<Cast, Integer> actorCount = new HashMap<>();
+//
+//        for (UserWatchRecord record : watchRecords) {
+//            if (record.getUserId() == userId) {
+//                List<Cast> cast = record.getMovie().getActors();
+//                if (cast != null) {
+//                    for (Cast actor : cast) {
+//                        actorCount.put(actor, actorCount.getOrDefault(actor, 0) + 1);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return actorCount;
+//    }
+//    private static Set<Movie> findRecommendedMovies(Map<String, Integer> favoriteGenres, Map<String, Integer> mostWatchedActors) {
+//        List<Movie> allMovies = Movie.LoadMovieFromFile();
+//        Set<Movie> recommendedMovies = new HashSet<>();
+//
+//        for (Movie movie : allMovies) {
+//            if (favoriteGenres.containsKey(movie.getGenre())) {
+//                recommendedMovies.add(movie);
+//            }
+//
+//            List<String> cast = movie.getCast();
+//            if (cast != null) {
+//                for (String actor : cast) {
+//                    if (mostWatchedActors.containsKey(actor)) {
+//                        recommendedMovies.add(movie);
+//                        break; // Avoid adding the same movie multiple times
+//                    }
+//                }
+//            }
+//        }
+//
+//        return recommendedMovies;
+//    }
+//    private static void sortMoviesByReleaseDate(List<Movie> movies) {
+//        movies.sort(new Comparator<Movie>() {
+//            @Override
+//            public int compare(Movie m1, Movie m2) {
+//                return m2.getReleaseDate().compareTo(m1.getReleaseDate()); // Compare in reverse order
+//            }
+//        });
+//    }
 
 
 }

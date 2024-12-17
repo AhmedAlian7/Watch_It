@@ -11,6 +11,8 @@ abstract public class Person {
     protected enGender _Gender;
 
 
+    public Person() {}
+
     public Person(String FirstName, String LastName, LocalDate DateOfBirth, String Nationality, enGender Gender) {
         this._FirstName = FirstName;
         this._DateOfBirth = DateOfBirth;
