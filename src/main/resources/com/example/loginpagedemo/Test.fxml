@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.loginpagedemo.TestController">
+   <children>
+      <TableView fx:id="UsersTable" layoutX="47.0" layoutY="157.0" prefHeight="214.0" prefWidth="614.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="ID" />
+          <TableColumn prefWidth="75.0" text="Name" />
+            <TableColumn prefWidth="75.0" text="Email" />
+        </columns>
+         <contextMenu>
+            <ContextMenu fx:id="context_User">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Add" />
+                  <MenuItem mnemonicParsing="false" onAction="#Delete_Clicked" text="Delete" />
+                  <MenuItem mnemonicParsing="false" text="Update" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </TableView>
+   </children>
+</AnchorPane>
