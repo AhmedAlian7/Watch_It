@@ -73,7 +73,7 @@ public class SignUpController {
             MessageBox.showError("Error","Username is already exists, please enter a new username");
             return;
         }
-        User newUser = new User(Username, Subscription.enPlan.Non,Email,LastName,FirstName,Password);
+        User newUser = new User(Username,Email,LastName,FirstName,Password);
        if (User.AddNewUser(newUser)) {
            MessageBox.showInfo("Confirm","Account Created Successfully");
        }

@@ -1,10 +1,8 @@
 package watchIt;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,6 +26,8 @@ public class Movie implements Serializable {
 
     private float OldRatings;
     private int noofwatched;
+
+
 
     public ArrayList<Actor> getActors() {
         return Actors;
@@ -131,7 +131,7 @@ public class Movie implements Serializable {
         return Rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         Rating = rating;
     }
 
@@ -144,7 +144,22 @@ public class Movie implements Serializable {
     }
 
     private static int count = 1;
-
+    public Movie(Movie movie) {
+        movie.setTitle(getTitle());
+        movie.setPosterSrc(getPosterSrc());
+        movie.setBudget(getBudget());
+        movie.setCountry(getCountry());
+        movie.setDirector(getDirector());
+        movie.setGenre(getGenre());
+        movie.setId(getId());
+        movie.setLanguage(getLanguage());
+        movie.setRating(getRating());
+        movie.setReleaseDate(getReleaseDate());
+        movie.setViews(getViews());
+        movie.setRunningTime(getRunningTime());
+        movie.setActors(getActors());
+        movie.setRevenue(getRevenue());
+    }
     public Movie() {
         Id = count++;
     }
@@ -165,8 +180,6 @@ public class Movie implements Serializable {
     }
 
     public Movie(int id, String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate, float revenue, int views) {
-
-
         Id = id;
         Title = title;
         Genre = genre;
@@ -178,7 +191,7 @@ public class Movie implements Serializable {
         Revenue = revenue;
         Views = views;
     }
-    public Movie(String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate, float revenue, int views , Director director , ArrayList<Actor> actors , String posterSrc ) {
+    public Movie(String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate ,String posterSrc, Director director , ArrayList<Actor> actors ) {
         Id = count++;
         Title = title;
         Genre = genre;
@@ -187,8 +200,6 @@ public class Movie implements Serializable {
         Country = country;
         Language = language;
         ReleaseDate = releaseDate;
-        Revenue = revenue;
-        Views = views;
         Director = director;
         Actors = actors;
         PosterSrc = posterSrc;
@@ -246,16 +257,11 @@ public class Movie implements Serializable {
 
     }
 
-    public static Boolean AddNewMovie(Movie movie) {
+    public static void AddNewMovie(Movie movie) {
         ArrayList<Movie> Movies = LoadMovieFromFile();
 
-        if (IsMovieExist(movie.getTitle())) {
-            return false;
-        } else {
             Movies.add(movie);
             Movie.SaveMoviesToFile(Movies);
-            return true;
-        }
     }
 
     public static Boolean DeleteMovie(Movie movie) {
@@ -344,12 +350,16 @@ public class Movie implements Serializable {
 
         ArrayList<Movie> AllMovies = LoadMovieFromFile();
         ArrayList<Movie> FilteredMovies = new ArrayList<>();
-        for (Movie movie : AllMovies) {
-            if (movie.getTitle().contains(word) || movie.getGenre().contains(word))
+        for (Movie movie : AllMovies)
+        {
+            if (movie.getTitle().toLowerCase().contains(word.toLowerCase()) || movie.getGenre().toLowerCase().contains(word.toLowerCase()))
                 FilteredMovies.add(movie);
-            for (Cast actor : movie.getActors()) {
-                if (actor.getFullName().contains(word))
-                    FilteredMovies.add(movie);
+            if(movie.getActors() != null)
+            {
+                for (Actor actor : movie.getActors()) {
+                    if (actor.getFullName().contains(word))
+                        FilteredMovies.add(movie);
+                }
             }
         }
         return FilteredMovies;

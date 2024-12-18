@@ -9,9 +9,9 @@ public class UserWatchRecord implements Serializable {
     private int userId;
     private Movie movie;
     private LocalDate watchDate;
-    private Integer rating;
+    private Float rating;
 
-    public UserWatchRecord(int userId, Movie movie, LocalDate watchDate, Integer rating) {
+    public UserWatchRecord(int userId, Movie movie, LocalDate watchDate, Float rating) {
         this.userId = userId;
         this.movie = movie;
         this.watchDate = watchDate;
@@ -36,10 +36,10 @@ public class UserWatchRecord implements Serializable {
         this.watchDate = watchDate;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return rating;
     }
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         if (rating == null || (rating >= 1 && rating <= 5)) {
             this.rating = rating; // Accept null or valid ratings only
         } else {

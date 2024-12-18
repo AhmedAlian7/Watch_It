@@ -3,6 +3,7 @@ package com.example.loginpagedemo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.LoadException;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -11,9 +12,8 @@ import javafx.scene.layout.VBox;
 import watchIt.Movie;
 import javafx.scene.input.MouseEvent;
 import  javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 
-
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class MainController implements Initializable {
 
     private ArrayList<Movie> recentMovies;
     private ArrayList<Movie> MostViewsMovies;
+    private ArrayList<Movie> searchedMovies;
 
 
     @FXML
@@ -38,11 +39,17 @@ public class MainController implements Initializable {
     private Pane pan_Search;
     @FXML
     private TextField FuckingSearch;
+    @FXML
+    private Label lblUserName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //lblUserName.setText(Global.CurrentUser.getFullName());
+        recentMovies = new ArrayList<>(Movie.LoadMovieFromFile());
+        MostViewsMovies = new ArrayList<>(Movie.LoadMovieFromFile());
+
+        lblUserName.setText(Global.CurrentUser.getFullName());
         pan_Home.setVisible(true);
         pan_Search.setVisible(false);
         try {
@@ -56,7 +63,7 @@ public class MainController implements Initializable {
     }
     public void Display_RecentMovies() throws IOException {
 
-        recentMovies =new ArrayList<>(Movie.LoadMovieFromFile());
+        //recentMovies =new ArrayList<>(Movie.LoadMovieFromFile());
         for (Movie value : recentMovies) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("Card.fxml"));
@@ -70,7 +77,7 @@ public class MainController implements Initializable {
 
 
         //MostViewsMovies = Movie.getMostViewedMovie(24);
-        MostViewsMovies = new ArrayList<>(Movie.LoadMovieFromFile());
+        //MostViewsMovies = new ArrayList<>(Movie.LoadMovieFromFile());
         /*int column = 8;
         int row = 1;
 
@@ -134,6 +141,8 @@ public class MainController implements Initializable {
     void Search_Clicked(MouseEvent event) {
         pan_Home.setVisible(false);
         pan_Search.setVisible(true);
+        searchedMovies = new ArrayList<>(Movie.LoadMovieFromFile());
+
     }
 
     @FXML
@@ -144,7 +153,7 @@ public class MainController implements Initializable {
     @FXML
     void btnSearch_Clicked(MouseEvent event) throws IOException {
         String word = FuckingSearch.getText();
-        ArrayList<Movie> searchedMovies = Movie.Filter(word);
+        searchedMovies = Movie.Filter(word);
         int column = 8;
         int row = 1;
 

@@ -182,7 +182,9 @@ public class AddMovieController implements Initializable {
             Director director = new Director(dfname, dlname, ddob, dgender, dnation);
 
             Movie movie = new Movie(title, releaseDate,runningTime, language, genre, country, budget);
-
+            movie.setDirector(director);
+            movie.setPosterSrc(posterPath);
+            movie.setActors(actors);
             Movie.AddNewMovie(movie);
 
             if (Movie.IsMovieExist(title)) {

@@ -64,11 +64,22 @@ public class LoginController {
 
         Global.CurrentUser = user;
 
-        Parent root = FXMLLoader.load(getClass().getResource("Subscription.fxml"));
-        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        if (user.hasValidSups()) {
+            Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else {
+            Parent root = FXMLLoader.load(getClass().getResource("Supscription.fxml"));
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+
+        }
 
     }
     public void CbShowPassword_Clicked(ActionEvent e)

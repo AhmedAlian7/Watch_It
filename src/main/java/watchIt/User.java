@@ -11,20 +11,15 @@ public class User implements Serializable {
     private String FirstName;
     private String LastName;
     private String Email;
-    private Subscription.enPlan subscriptionType;
 
     private ArrayList<Movie> WatchedMovies;
     private ArrayList<Movie> WatchLaterMovies;
+    private ArrayList<UserWatchRecord> userWatchRecord;
 
-    private UserWatchRecord userWatchRecord;
+    private ArrayList<Subscription> subscriptionHistory;
+    private Subscription currentSubscription;
 
-
-    public Subscription.enPlan getSubscriptionType() {
-        return subscriptionType;
-    }
-    public void setSubscriptionType(Subscription.enPlan subscriptionType) {
-        this.subscriptionType = subscriptionType;
-    }
+    private int limitMovies;
 
     public int getID() {
         return ID;
@@ -72,17 +67,27 @@ public class User implements Serializable {
         Email = email;
     }
 
+    public Subscription getSubscription() {
+        return currentSubscription;
+    }
+    public void setSubscription(Subscription subscription) {
+        this.currentSubscription = subscription;
+    }
+
     private static int counter =1;
 
-    public User(String username, Subscription.enPlan subscription, String email, String lastName, String firstName, String password) {
+    public User(String username, String email, String lastName, String firstName, String password) {
         Username = username;
         this.ID = counter;
-        this.subscriptionType = subscription;
         Email = email;
         LastName = lastName;
         FirstName = firstName;
         Password = password;
 
+        WatchedMovies = new ArrayList<>();
+        WatchLaterMovies = new ArrayList<>();
+        userWatchRecord = new ArrayList<>();
+        currentSubscription = new Subscription();
         counter++;
     }
 
@@ -174,8 +179,24 @@ public class User implements Serializable {
 
         users.remove(user);
         saveUsersDataToFile(users);
-        return true;    }
+        return true;
+    }
 
+    public Boolean hasValidSups() {
+        return true;
+    }
+    public void createNewSups(Subscription subscription) {
+        subscriptionHistory.add(currentSubscription);
+        currentSubscription = subscription;
+        limitMovies = currentSubscription.getAllowedWatches();
+
+    }
+
+    public void WatchMovie(UserWatchRecord record) {
+
+        userWatchRecord.add(record);
+
+    }
 
 
 }

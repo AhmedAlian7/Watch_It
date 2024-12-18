@@ -2,9 +2,18 @@ package com.example.loginpagedemo;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import watchIt.Subscription;
+
+import java.io.IOException;
+import java.time.LocalDate;
 
 public class SubscriptionController {
 
@@ -49,8 +58,28 @@ public class SubscriptionController {
     }
 
     @FXML
-    void btnNext_Clicked(ActionEvent event) {
+    void btnNext_Clicked(ActionEvent event) throws IOException {
 
+        if (paneBasic.isVisible()) {
+            Subscription sups = new Subscription(Subscription.enPlan.Basic, LocalDate.now());
+            Global.CurrentUser.createNewSups(sups);
+            return;
+        }
+        if (paneStandard.isVisible()) {
+            Subscription sups = new Subscription(Subscription.enPlan.Standard, LocalDate.now());
+            Global.CurrentUser.createNewSups(sups);
+            return;
+        }
+        if (panePremium.isVisible()) {
+            Subscription sups = new Subscription(Subscription.enPlan.Premium, LocalDate.now());
+            Global.CurrentUser.createNewSups(sups);
+        }
+
+        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

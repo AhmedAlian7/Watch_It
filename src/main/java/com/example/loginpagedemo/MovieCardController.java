@@ -26,36 +26,58 @@ public class MovieCardController {
     @FXML
     private VBox BOX;
 
+    private Movie selectedMovie;
+
     public void setData(Movie movie) {
+        selectedMovie = movie;
+
         String posterPath = movie.getPosterSrc();
         Image image = null;
-        if (posterPath != null) {
+        if (posterPath != null)
+        {
             InputStream imageStream = getClass().getResourceAsStream(posterPath);
-            if (imageStream != null) {
+            if (imageStream != null)
                 image = new Image(imageStream);
-            } else {
+            else
+            {
                 System.out.println("Resource not found: " + posterPath);
+                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/unknown.png")));
             }
-        } else {
+        }
+        else
+        {
             System.out.println("Poster path is null!");
+            image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/unknown.png")));
         }
         MovieImage.setImage(image);
         lblMovieName.setText(movie.getTitle());
 
-        BOX.setStyle("-fx-background-color: #"+ "white" +";" +
+        BOX.setStyle("-fx-background-color: #"+ "black" +";" +
                 " -fx-background-radius: 15;" +
                 "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10, 0 , 0 ,10);");
     }
 
+    public Movie getData() {
+        return selectedMovie;
+    }
 
     @FXML
     void Show_Movie_Details(MouseEvent event) throws IOException {
 
-
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("Test.fxml")); // Should load Scene1.fxml
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Movie.fxml"));
+
+        Parent root = fxmlLoader.load();
+
+        // Get the controller and pass data to it
+        MovieController controller = fxmlLoader.getController();
+        controller.setData(selectedMovie);
+
+        // Set up the scene and stage
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 }
