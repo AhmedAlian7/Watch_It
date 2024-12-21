@@ -1,8 +1,9 @@
 package watchIt;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-abstract public class Person {
+abstract public class Person implements Serializable {
 
     public enum enGender {Male, Female}
 
@@ -10,15 +11,19 @@ abstract public class Person {
     protected LocalDate _DateOfBirth;
     protected enGender _Gender;
 
-
-    public Person() {}
-
     public Person(String FirstName, String LastName, LocalDate DateOfBirth, String Nationality, enGender Gender) {
         this._FirstName = FirstName;
         this._DateOfBirth = DateOfBirth;
         this._Nationality = Nationality;
         this._Gender = Gender;
         this._LastName = LastName;
+    }
+
+    public Person() {
+    }
+
+    public String getFullName() {
+        return _FirstName + " " + _LastName;
     }
 
     public void set_LastName(String _LastName) {
@@ -45,8 +50,6 @@ abstract public class Person {
         return _LastName;
     }
 
-    public String getFullName() {return  _FirstName + ' ' + _LastName;}
-
     public enGender get_Gender() {
         return _Gender;
     }
@@ -56,4 +59,5 @@ abstract public class Person {
     public String get_Nationality() {
         return _Nationality;
     }
+
 }

@@ -1,8 +1,9 @@
 package watchIt;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Subscription {
+public class Subscription implements Serializable {
     public enum enPlan {Basic, Standard, Premium, Non}
 
     private enPlan Plan;
@@ -14,22 +15,13 @@ public class Subscription {
     public LocalDate getStartDate() {
         return StartDate;
     }
-    public void setStartDate(LocalDate startDate) {
-        StartDate = startDate;
-    }
 
     public int getAllowedWatches() {
         return AllowedWatches;
     }
-    public void setAllowedWatches(int allowedWatches) {
-        AllowedWatches = allowedWatches;
-    }
 
     public float getPrice() {
         return Price;
-    }
-    public void setPrice(float price) {
-        Price = price;
     }
 
     public enPlan getPlan() {
@@ -37,16 +29,19 @@ public class Subscription {
     }
     public void setPlan(enPlan plan) {
         Plan = plan;
+        initializePlanDetails();
     }
 
     public Subscription(enPlan plan, LocalDate startDate) {
         Plan = plan;
         StartDate = startDate;
-        setPrice();
-        setAllowedWatches();
+        initializePlanDetails();
     }
 
     public Subscription() {
+        this.Plan = enPlan.Non;
+        this.StartDate = LocalDate.now();
+        initializePlanDetails();
     }
 
 
@@ -65,5 +60,41 @@ public class Subscription {
             case Basic -> AllowedWatches = 5;
         }
     }
+    public static float getPrices(enPlan plan) {
+        switch (plan) {
+            case Premium -> {
+                return 150;
+            }
+            case Standard -> {
+                return 100;
+            }
+            case Basic -> {
+                return 50;
+            }
+            default -> {
+                return -1 ;
+            }
+        }
+    }
 
+    private void initializePlanDetails() {
+        switch (Plan) {
+            case Premium -> {
+                this.Price = 150;
+                this.AllowedWatches = 30;
+            }
+            case Standard -> {
+                this.Price = 100;
+                this.AllowedWatches = 10;
+            }
+            case Basic -> {
+                this.Price = 50;
+                this.AllowedWatches = 5;
+            }
+            case Non -> {
+                this.Price = 0;
+                this.AllowedWatches = 0;
+            }
+        }
+    }
 }

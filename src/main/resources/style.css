@@ -3,7 +3,7 @@
 }
 
 .transparent{
--fx-background-color: #1E1F22;
+-fx-background-color:#28252E;
 }
 
 .round-layout{
@@ -45,4 +45,20 @@
     /*-fx-background-color: #0F0F0F;*/
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+}
+
+.button {
+    -fx-background-color: #dca523; /* Default button color */
+}
+
+.button:hover {
+    -fx-background-color: #b78a1b; /* Darker color when hovered */
+}
+
+.scroll-pane .content {
+    -fx-background-color: #28252E;
+}
+
+.Button-Orange{
+-fx-background-color: #B48424;
 }

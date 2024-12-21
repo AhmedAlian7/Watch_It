@@ -8,6 +8,10 @@ import java.util.List;
 
 public class Movie implements Serializable {
 
+    private static final String FILENAME = "movies.ser";
+    private static ArrayList<Movie> Movies; // Singleton list for movies
+
+
     private int Id;
     private String Title;
     private LocalDate ReleaseDate;
@@ -32,25 +36,25 @@ public class Movie implements Serializable {
     public ArrayList<Actor> getActors() {
         return Actors;
     }
-
     public void setActors(ArrayList<Actor> cast) {
         Actors = cast;
+    }
+    public void addActor(Actor actor) {
+        if (!Actors.contains(actor)) {
+            Actors.add(actor);
+        }
     }
 
     public Director getDirector() {
         return Director;
     }
-
     public void setDirector(Director director) {
         Director = director;
     }
 
-    public static ArrayList<Movie> Movies;
-
     public String getPosterSrc() {
         return PosterSrc;
     }
-
     public void setPosterSrc(String posterSrc) {
         PosterSrc = posterSrc;
     }
@@ -59,14 +63,9 @@ public class Movie implements Serializable {
         return Id;
     }
 
-    public void setId(int id) {
-        Id = id;
-    }
-
     public String getTitle() {
         return Title;
     }
-
     public void setTitle(String title) {
         Title = title;
     }
@@ -74,7 +73,6 @@ public class Movie implements Serializable {
     public LocalDate getReleaseDate() {
         return ReleaseDate;
     }
-
     public void setReleaseDate(LocalDate releaseDate) {
         ReleaseDate = releaseDate;
     }
@@ -82,7 +80,6 @@ public class Movie implements Serializable {
     public int getRunningTime() {
         return RunningTime;
     }
-
     public void setRunningTime(int runningTime) {
         RunningTime = runningTime;
     }
@@ -90,7 +87,6 @@ public class Movie implements Serializable {
     public String getGenre() {
         return Genre;
     }
-
     public void setGenre(String genre) {
         Genre = genre;
     }
@@ -98,7 +94,6 @@ public class Movie implements Serializable {
     public String getLanguage() {
         return Language;
     }
-
     public void setLanguage(String languages) {
         Language = languages;
     }
@@ -106,7 +101,6 @@ public class Movie implements Serializable {
     public String getCountry() {
         return Country;
     }
-
     public void setCountry(String country) {
         Country = country;
     }
@@ -114,7 +108,6 @@ public class Movie implements Serializable {
     public float getBudget() {
         return Budget;
     }
-
     public void setBudget(float budget) {
         Budget = budget;
     }
@@ -122,7 +115,6 @@ public class Movie implements Serializable {
     public float getRevenue() {
         return Revenue;
     }
-
     public void setRevenue(float revenue) {
         Revenue = revenue;
     }
@@ -130,7 +122,6 @@ public class Movie implements Serializable {
     public float getRating() {
         return Rating;
     }
-
     public void setRating(float rating) {
         Rating = rating;
     }
@@ -138,27 +129,25 @@ public class Movie implements Serializable {
     public int getViews() {
         return Views;
     }
-
     public void setViews(int views) {
         Views = views;
     }
 
     private static int count = 1;
-    public Movie(Movie movie) {
-        movie.setTitle(getTitle());
-        movie.setPosterSrc(getPosterSrc());
-        movie.setBudget(getBudget());
-        movie.setCountry(getCountry());
-        movie.setDirector(getDirector());
-        movie.setGenre(getGenre());
-        movie.setId(getId());
-        movie.setLanguage(getLanguage());
-        movie.setRating(getRating());
-        movie.setReleaseDate(getReleaseDate());
-        movie.setViews(getViews());
-        movie.setRunningTime(getRunningTime());
-        movie.setActors(getActors());
-        movie.setRevenue(getRevenue());
+    public Movie(String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate, float revenue, int views , Director director , ArrayList<Actor> actors , String posterSrc ) {
+        Id = count++;
+        Title = title;
+        Genre = genre;
+        RunningTime = runningTime;
+        Budget = budget;
+        Country = country;
+        Language = language;
+        ReleaseDate = releaseDate;
+        Revenue = revenue;
+        Views = views;
+        Director = director;
+        Actors = actors;
+        PosterSrc = posterSrc;
     }
     public Movie() {
         Id = count++;
@@ -175,10 +164,7 @@ public class Movie implements Serializable {
         Revenue = 0;
         Rating = 0;
         Views = 0;
-
-        Movies = LoadMovieFromFile();
     }
-
     public Movie(int id, String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate, float revenue, int views) {
         Id = id;
         Title = title;
@@ -204,32 +190,53 @@ public class Movie implements Serializable {
         Actors = actors;
         PosterSrc = posterSrc;
     }
-
-    public static ArrayList<Movie> LoadMovieFromFile() {
-        ArrayList<Movie> Movies = new ArrayList<>();
-        File file = new File("Movies.txt");
-
-        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
-            Movies = (ArrayList<Movie>) objectInputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("An error occurred while reading the file: " + e.getMessage());
-        }
-
-        return Movies;
+    public Movie(String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate ,String posterSrc, Director director) {
+        Id = count++;
+        Title = title;
+        Genre = genre;
+        RunningTime = runningTime;
+        Budget = budget;
+        Country = country;
+        Language = language;
+        ReleaseDate = releaseDate;
+        Director = director;
+        Actors = new ArrayList<>();
+        PosterSrc = posterSrc;
     }
 
-    public static void SaveMoviesToFile(ArrayList<Movie> Movies) {
-        File file = new File("Movies.txt");
+    public static ArrayList<Movie> getAllMovies() {
+        if (Movies == null) {
+            Movies = LoadMovieFromFile();
+        }
+        return Movies;
+    }
+    private static ArrayList<Movie> LoadMovieFromFile() {
+        ArrayList<Movie> movies = new ArrayList<>();
+        File file = new File(FILENAME);
 
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
-            objectOutputStream.writeObject(Movies);
+        if (!file.exists() || !(file.length() > 0)) {
+            System.out.println("file is empty or doesn't exist");
+            return movies; // Return empty list
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILENAME))) {
+            movies = (ArrayList<Movie>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error while loading movies: " + e.getMessage());
+        }
+        return movies;
+    }
+
+    public static void SaveMoviesToFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
+            oos.writeObject(Movies);
         } catch (IOException e) {
-            System.err.println("An error occurred while reading the file: " + e.getMessage());
+            System.err.println("Error saving movies: " + e.getMessage());
         }
     }
 
     public static Movie Find(String movieTitle) {
-        ArrayList<Movie> Movies = LoadMovieFromFile();
+        ArrayList<Movie> Movies = getAllMovies();
 
         for (Movie movie : Movies) {
             if (movie.getTitle().equalsIgnoreCase(movieTitle)) {
@@ -238,38 +245,81 @@ public class Movie implements Serializable {
         }
         return null;
     }
-
-    public static ArrayList<Movie> SameGenreMovies(String genre) {
-        ArrayList<Movie> Movies = LoadMovieFromFile();
-        ArrayList<Movie> SameGenre = new ArrayList<>();
-
-        for (Movie movie : Movies) {
-            if (movie.getGenre().contains(genre)) {
-                SameGenre.add(movie);
-            }
-        }
-        return SameGenre;
-    }
-
     public static Boolean IsMovieExist(String MovieTitle) {
         Movie movie = Movie.Find(MovieTitle);
         return (movie != null);
 
     }
+    public static void  AssignMovieToDirector(Movie movie,Director director){
 
-    public static void AddNewMovie(Movie movie) {
-        ArrayList<Movie> Movies = LoadMovieFromFile();
+        if(!director.IsMovieAssigned(movie)) {
+            director.getListOfMovies().add(movie);
+        }
 
-            Movies.add(movie);
-            Movie.SaveMoviesToFile(Movies);
     }
+    public static void  AssignMovieToActor(Movie movie,Actor actor){
 
+        if(!actor.IsMovieAssigned(movie)) {
+            actor.getListOfMovies().add(movie);
+        }
+
+    }
+    public static void  AssignMovieToActors(Movie movie,ArrayList<Actor> actors){
+
+        for(Actor actor:actors){
+
+            AssignMovieToActor(movie,actor);
+
+        }
+
+    }
+    public static ArrayList<Movie> FindByCast(String castName)
+    {
+        ArrayList<Movie> Movies = getAllMovies();
+        ArrayList<Movie> CastMovies = new ArrayList<>();
+
+        for (Movie movie : Movies)
+        {
+
+            if(movie.getDirector()._FirstName.equalsIgnoreCase(castName))
+            {
+                CastMovies.add(movie);
+            }
+
+            for (Actor actor : movie.getActors())
+            {
+                if(actor._FirstName.equalsIgnoreCase(castName))
+                {
+                    CastMovies.add(movie);
+                    break;
+                }
+            }
+        }
+        return CastMovies;
+    }
+    public static boolean AddNewMovie(Movie movie) {
+
+        ArrayList<Movie> Movies = getAllMovies();
+        if(IsMovieExist(movie.getTitle())) {
+            return false;
+        }
+
+        AssignMovieToDirector(movie,movie.Director);
+        AssignMovieToActors(movie,movie.Actors);
+        Movies.add(movie);
+        SaveMoviesToFile();
+        return true;
+    }
+    public static void AddNewMovies(List<Movie> moviesToAdd) {
+        ArrayList<Movie> AllMovies = getAllMovies();
+        AllMovies.addAll(moviesToAdd);
+        SaveMoviesToFile();
+    }
     public static Boolean DeleteMovie(Movie movie) {
-        ArrayList<Movie> Movies = LoadMovieFromFile();
-
+        ArrayList<Movie> Movies = getAllMovies();
         if (IsMovieExist(movie.getTitle())) {
             Movies.remove(movie);
-            Movie.SaveMoviesToFile(Movies);
+            Movie.SaveMoviesToFile();
             return true;
         } else
             return false;
@@ -277,7 +327,7 @@ public class Movie implements Serializable {
 
     public static ArrayList<Movie> getMostViewedMovie(int limit) {
 
-        ArrayList<Movie> Movies = LoadMovieFromFile();
+        ArrayList<Movie> Movies = getAllMovies();
         ArrayList<Movie> TopFiveMovies = new ArrayList<>();
 
         if (Movies == null || Movies.isEmpty()) {
@@ -295,32 +345,29 @@ public class Movie implements Serializable {
 
         return TopFiveMovies;
     }
-
     public static ArrayList<Movie> getRecentMovies() {
-        ArrayList<Movie> movies = LoadMovieFromFile();
-        ArrayList<Movie> recentMovies = new ArrayList<>();
+        ArrayList<Movie> movies = getAllMovies();
 
-        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
+//        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
+//
+//        for (Movie movie : movies) {
+//            if (movie.getReleaseDate().isAfter(oneMonthAgo)) {
+//                recentMovies.add(movie);
+//            }
+//        }
 
-        for (Movie movie : movies) {
-            if (movie.getReleaseDate().isAfter(oneMonthAgo)) {
-                recentMovies.add(movie);
-            }
-        }
-
-        recentMovies.sort(new Comparator<Movie>() {
+        movies.sort(new Comparator<Movie>() {
             @Override
             public int compare(Movie m1, Movie m2) {
                 return m2.getReleaseDate().compareTo(m1.getReleaseDate());
             }
         });
 
-        return recentMovies;
+        return movies;
 
     }
-
     public static List<Movie> getTopRatedMovies(int limit) {
-        List<Movie> movies = Movies;
+        List<Movie> movies = getAllMovies();
         List<Movie> topRatedMovies = new ArrayList<>(movies);
 
         // Sort movies by rating in descending order
@@ -337,13 +384,28 @@ public class Movie implements Serializable {
 
         return topRatedMovies;
     }
+    public static ArrayList<Movie> SameGenreMovies(String genre) {
+        ArrayList<Movie> Movies = getAllMovies();
+        ArrayList<Movie> SameGenre = new ArrayList<>();
+
+        for (Movie movie : Movies) {
+            if (movie.getGenre().contains(genre)) {
+                SameGenre.add(movie);
+            }
+        }
+        return SameGenre;
+    }
 
     public void CalcRating(int rating) {
         noofwatched++;
-        Views++; // When press watch
         OldRatings += rating;
         this.Rating = OldRatings / noofwatched;
 
+        SaveMoviesToFile();
+    }
+    public void IncrementViewsByOne() {
+        this.Views ++;
+        SaveMoviesToFile();
     }
 
     public static ArrayList<Movie> Filter(String word) { // word : movie name or actor name or genre
@@ -386,7 +448,31 @@ public class Movie implements Serializable {
 
         }
         return guiMovies;
-
-
     }
+
+    public static boolean UpdateMovie(Movie updatedMovie) {
+
+        ArrayList<Movie> movies = getAllMovies();
+
+        for (int i = 0; i < movies.size(); i++) {
+            Movie movie = movies.get(i);
+            if (movie.getTitle().equalsIgnoreCase(updatedMovie.getTitle())) {
+                movies.set(i, updatedMovie);
+                SaveMoviesToFile();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void clearMoviesFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
+            // Write an empty list to the file
+            oos.writeObject(new ArrayList<Movie>());
+            System.out.println("Movies file has been cleared.");
+        } catch (IOException e) {
+            System.err.println("Error while clearing movies file: " + e.getMessage());
+        }
+    }
+
 }

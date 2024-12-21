@@ -3,11 +3,14 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -104,10 +107,78 @@
                   <String fx:value="selected" />
                </styleClass>
             </Button>
+            <Button mnemonicParsing="false" prefHeight="53.0" prefWidth="294.0" text="Subs_btn">
+               <graphic>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="289.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
+                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/icons8-tickets-66.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="50.0" prefWidth="174.0" styleClass="mouse-moved" text="Subscrptions" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+               </graphic>
+               <styleClass>
+                  <String fx:value="mouse-moved" />
+                  <String fx:value="black-background" />
+               </styleClass>
+            </Button>
+            <Separator prefWidth="200.0" />
+            <Button fx:id="AddMovie" mnemonicParsing="false" onAction="#btn_AddMovie_Clicked" prefHeight="53.0" prefWidth="294.0" text="AddMovie_btn">
+               <graphic>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="289.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/icons8-plus-50.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="50.0" prefWidth="174.0" styleClass="mouse-moved" text="Add Movie" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+               </graphic>
+               <styleClass>
+                  <String fx:value="mouse-moved" />
+                  <String fx:value="black-background" />
+               </styleClass>
+            </Button>
          </children>
       </VBox>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="transparent" stylesheets="@../../../style.css" BorderPane.alignment="CENTER" />
+      <TableView fx:id="UsersView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="Uid" prefWidth="150.0" text="Id" />
+          <TableColumn fx:id="Uusername" minWidth="0.0" prefWidth="150.0" text="Username" />
+            <TableColumn fx:id="Upassword" prefWidth="150.0" text="Password" />
+            <TableColumn fx:id="Ufirstname" prefWidth="150.0" text="FirstName" />
+            <TableColumn fx:id="Ulastname" prefWidth="150.0" text="LastName" />
+            <TableColumn fx:id="Usub" prefWidth="150.0" text="Subscription" />
+            <TableColumn fx:id="Uemail" prefWidth="116.79998779296875" text="Email" />
+        </columns>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#DeleteUser" text="Delete" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </TableView>
    </center>
 </BorderPane>

@@ -12,17 +12,12 @@ import watchIt.Subscription;
 import watchIt.User;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SignUpController {
-
-    @FXML
-    private Button btnSignIn;
-
     @FXML
     private CheckBox cbShowPassword;
 
-    @FXML
-    private Hyperlink hlSignIn;
 
     @FXML
     private PasswordField pfPassword;
@@ -81,21 +76,23 @@ public class SignUpController {
            MessageBox.showError("Error","An error occurred, Account creation failed");
        }
 
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml")); // Should load Scene1.fxml
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Display(event, "Login.fxml");
     }
     @FXML
     void hlSignIn_Clicked(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml")); // Should load Scene1.fxml
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Display(event, "Login.fxml");
     }
-
+    private void Display(ActionEvent event,String FILE) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(FILE)));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            MessageBox.showError("Failure", "Cannot load "+FILE+" "+ e.getMessage());
+        }
+    }
     private boolean isEmailValid(String email) {
         // Regex for email validation
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";

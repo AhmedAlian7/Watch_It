@@ -29,30 +29,24 @@ public class MovieCardController {
     private Movie selectedMovie;
 
     public void setData(Movie movie) {
-        selectedMovie = movie;
 
+        selectedMovie = movie;
         String posterPath = movie.getPosterSrc();
         Image image = null;
-        if (posterPath != null)
-        {
-            InputStream imageStream = getClass().getResourceAsStream(posterPath);
-            if (imageStream != null)
-                image = new Image(imageStream);
-            else
-            {
-                System.out.println("Resource not found: " + posterPath);
+        if (posterPath != null) {
+            try {
+                image = new Image(posterPath);
+            } catch (Exception e) {
                 image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/unknown.png")));
             }
-        }
-        else
-        {
+        } else {
             System.out.println("Poster path is null!");
             image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/unknown.png")));
         }
         MovieImage.setImage(image);
         lblMovieName.setText(movie.getTitle());
 
-        BOX.setStyle("-fx-background-color: #"+ "black" +";" +
+        BOX.setStyle("-fx-background-color: #"+ "white" +";" +
                 " -fx-background-radius: 15;" +
                 "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10, 0 , 0 ,10);");
     }
@@ -65,9 +59,7 @@ public class MovieCardController {
     void Show_Movie_Details(MouseEvent event) throws IOException {
 
         Stage stage = new Stage();
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Movie.fxml"));
-
         Parent root = fxmlLoader.load();
 
         // Get the controller and pass data to it

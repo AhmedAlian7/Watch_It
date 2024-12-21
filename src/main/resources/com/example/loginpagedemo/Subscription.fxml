@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,27 +21,30 @@
       </Label>
       <HBox layoutX="26.0" layoutY="146.0" prefHeight="42.0" prefWidth="702.0">
          <children>
-            <Button fx:id="btnBasic" mnemonicParsing="false" onAction="#btnBasic_Clicked" prefHeight="42.0" prefWidth="231.0" text="Basic">
+            <Button fx:id="btnBasic" mnemonicParsing="false" onAction="#btnBasic_Clicked" prefHeight="42.0" prefWidth="231.0" style="-fx-background-color: white;" stylesheets="@../../../style.css" text="Basic">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="btnStandard" mnemonicParsing="false" onAction="#btnStandard_Clicked" prefHeight="42.0" prefWidth="252.0" style="-fx-background-color: #dca523;" text="Standard">
+            <Button fx:id="btnStandard" mnemonicParsing="false" onAction="#btnStandard_Clicked" prefHeight="42.0" prefWidth="252.0" stylesheets="@../../../style.css" text="Standard">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="btnPremium" mnemonicParsing="false" onAction="#btnPremium_Clicked" prefHeight="42.0" prefWidth="238.0" text="Premium">
+            <Button fx:id="btnPremium" mnemonicParsing="false" onAction="#btnPremium_Clicked" prefHeight="42.0" prefWidth="238.0" style="-fx-background-color: white;" stylesheets="@../../../style.css" text="Premium">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
          </children>
       </HBox>
-      <Button fx:id="btnNext" defaultButton="true" layoutX="164.0" layoutY="439.0" mnemonicParsing="false" onAction="#btnNext_Clicked" prefHeight="43.0" prefWidth="426.0" style="-fx-background-color: #dca523;" text="Next">
+      <Button fx:id="btnNext" defaultButton="true" layoutX="164.0" layoutY="439.0" mnemonicParsing="false" onAction="#btnNext_Clicked" prefHeight="43.0" prefWidth="426.0" stylesheets="@../../../style.css" text="Next">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <AnchorPane fx:id="paneStandard" layoutX="5.0" layoutY="214.0" prefHeight="214.0" prefWidth="755.0">
          <children>

@@ -85,23 +85,31 @@
                   <String fx:value="black-background" />
                </styleClass>
             </Button>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="320.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
-               <children>
-                  <ImageView fitHeight="37.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../img/icons8-tickets-66.png" />
-                     </image>
-                  </ImageView>
-                  <Label prefHeight="59.0" prefWidth="168.0" text="Subscriptions" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </HBox>
+            <Button mnemonicParsing="false" onAction="#btn_Subs_Clicked" prefHeight="58.0" prefWidth="296.0" text="Subs_btn">
+               <graphic>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="320.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
+                     <children>
+                        <ImageView fitHeight="37.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/icons8-tickets-66.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="50.0" prefWidth="203.0" text="Subscriptions" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+               </graphic>
+               <styleClass>
+                  <String fx:value="black-background" />
+                  <String fx:value="mouse-moved" />
+               </styleClass>
+            </Button>
             <Separator prefWidth="200.0" />
             <Button fx:id="AddMovie" mnemonicParsing="false" onAction="#btn_AddMovie_Clicked" prefHeight="53.0" prefWidth="294.0" text="AddMovie_btn">
                <graphic>
@@ -162,7 +170,7 @@
          <contextMenu>
             <ContextMenu fx:id="contextMenu">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#Deletebook" text="Delete" />
+                <MenuItem mnemonicParsing="false" onAction="#Deletemovie" text="Delete" />
                   <MenuItem mnemonicParsing="false" text="Edit" />
               </items>
             </ContextMenu>

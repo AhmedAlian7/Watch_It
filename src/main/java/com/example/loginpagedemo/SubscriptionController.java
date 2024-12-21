@@ -63,16 +63,20 @@ public class SubscriptionController {
         if (paneBasic.isVisible()) {
             Subscription sups = new Subscription(Subscription.enPlan.Basic, LocalDate.now());
             Global.CurrentUser.createNewSups(sups);
-            return;
+            MessageBox.showInfo("Confirm", "You can watch up to 5 movies per month");
+
         }
-        if (paneStandard.isVisible()) {
+        else if (paneStandard.isVisible()) {
             Subscription sups = new Subscription(Subscription.enPlan.Standard, LocalDate.now());
             Global.CurrentUser.createNewSups(sups);
-            return;
+            MessageBox.showInfo("Confirm", "You can watch up to 10 movies per month");
+
         }
-        if (panePremium.isVisible()) {
+        else if (panePremium.isVisible()) {
             Subscription sups = new Subscription(Subscription.enPlan.Premium, LocalDate.now());
             Global.CurrentUser.createNewSups(sups);
+            MessageBox.showInfo("Confirm", "You can watch up to 30 movies per month");
+
         }
 
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));

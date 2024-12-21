@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Hyperlink?>
@@ -12,17 +13,17 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.loginpagedemo.LoginController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #28252e;">
          <children>
-            <Label layoutX="236.0" layoutY="31.0" text="Sign In">
+            <Label layoutX="236.0" layoutY="31.0" text="Sign In" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="39.0" />
                </font>
             </Label>
-            <TextField fx:id="tfUsername" layoutX="173.0" layoutY="162.0" prefHeight="26.0" prefWidth="253.0" promptText="Username" />
-            <PasswordField fx:id="pfPassword" layoutX="173.0" layoutY="200.0" prefHeight="26.0" prefWidth="254.0" promptText="Password" />
-            <CheckBox fx:id="cbShowPassword" layoutX="173.0" layoutY="235.0" mnemonicParsing="false" onAction="#CbShowPassword_Clicked" text="Show Password" />
-            <Label layoutX="194.0" layoutY="359.0" text="Don’t have an account?">
+            <TextField fx:id="tfUsername" layoutX="183.0" layoutY="141.0" prefHeight="26.0" prefWidth="253.0" promptText="Username" />
+            <PasswordField fx:id="pfPassword" layoutX="183.0" layoutY="179.0" prefHeight="26.0" prefWidth="254.0" promptText="Password" />
+            <CheckBox fx:id="cbShowPassword" layoutX="183.0" layoutY="214.0" mnemonicParsing="false" onAction="#CbShowPassword_Clicked" text="Show Password" textFill="WHITE" />
+            <Label layoutX="194.0" layoutY="359.0" text="Don’t have an account?" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -32,18 +33,24 @@
                   <Font size="14.0" />
                </font>
             </Hyperlink>
-            <Label layoutX="96.0" layoutY="165.0" text="Username:">
+            <Label layoutX="95.0" layoutY="141.0" text="Username:" textFill="WHITE">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="100.0" layoutY="203.0" text="Password:">
+            <Label layoutX="99.0" layoutY="179.0" text="Password:" textFill="WHITE">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="btnSignIn" defaultButton="true" layoutX="173.0" layoutY="281.0" mnemonicParsing="false" onAction="#btnSignIn_Clicked" prefHeight="26.0" prefWidth="254.0" style="-fx-background-color: #dca523;" text="Sign In" />
-            <TextField fx:id="tfPasswword" layoutX="173.0" layoutY="201.0" prefHeight="26.0" prefWidth="254.0" promptText="Password" visible="false" />
+            <Button fx:id="btnSignIn" defaultButton="true" layoutX="183.0" layoutY="267.0" mnemonicParsing="false" onAction="#btnSignIn_Clicked" prefHeight="26.0" prefWidth="254.0" stylesheets="@../../../style.css" text="Sign In">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <TextField fx:id="tfPasswword" layoutX="183.0" layoutY="179.0" prefHeight="26.0" prefWidth="254.0" promptText="Password" visible="false" />
          </children>
       </AnchorPane>
    </children>

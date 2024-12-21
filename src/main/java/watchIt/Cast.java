@@ -20,6 +20,8 @@ public class Cast extends Person implements Serializable {
         SocialMediaLinks = new HashMap<>();
     }
 
+
+
     public ArrayList<Movie> getListOfMovies() {
         return ListOfMovies;
     }
@@ -40,6 +42,21 @@ public class Cast extends Person implements Serializable {
 
     public void removeSocialMedia(String platform) {
         this.SocialMediaLinks.remove(platform);
+    }
+
+
+
+    public Cast(String firstName, String lastName, LocalDate dateOfBirth, Person.enGender gender, String nationality, ArrayList<Movie> ListOfMovies)
+    {
+        super(firstName,lastName, dateOfBirth,nationality,gender);
+        this.ListOfMovies = ListOfMovies;
+        SocialMediaLinks = new HashMap<>();
+    }
+
+    public Cast(String FirstName, String LastName, LocalDate DateOfBirth, String Nationality, enGender Gender) {
+        super(FirstName, LastName, DateOfBirth, Nationality, Gender);
+        this.ListOfMovies = new ArrayList<>();
+        SocialMediaLinks = new HashMap<>();
     }
 
 }

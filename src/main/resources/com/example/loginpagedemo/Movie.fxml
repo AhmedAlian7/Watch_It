@@ -20,14 +20,14 @@
             <Image url="@../../../img/interstellar.jpg" />
          </image>
       </ImageView>
-      <HBox alignment="CENTER" layoutX="-8.0" prefHeight="50.0" prefWidth="756.0" style="-fx-background-color: #201B17;" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="-8.0" prefHeight="50.0" prefWidth="756.0" style="-fx-background-color: #201B17;" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="lblFormTitle" prefHeight="50.0" prefWidth="154.0" style="-fx-font-family: Droid Arabic Kufi;" text="Movie Name " textFill="WHITE">
+            <Label fx:id="lblFormTitle" alignment="CENTER" prefHeight="50.0" prefWidth="1099.0" style="-fx-font-family: Droid Arabic Kufi;" text="Movie Name " textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB Bold" size="24.0" />
                </font>
                <HBox.margin>
-                  <Insets />
+                  <Insets left="20.0" right="30.0" />
                </HBox.margin>
             </Label>
          </children>
@@ -35,7 +35,7 @@
             <Insets left="30.0" />
          </padding>
       </HBox>
-      <Button layoutX="524.0" layoutY="382.0" mnemonicParsing="false" onAction="#btnWatch_Clicked" prefHeight="38.0" prefWidth="200.0" style="-fx-background-color: #dca523;" styleClass="my-button" stylesheets="@../../../style.css" text="Watch">
+      <Button fx:id="btnWatch" layoutX="524.0" layoutY="382.0" mnemonicParsing="false" onAction="#btnWatch_Clicked" prefHeight="38.0" prefWidth="200.0" stylesheets="@../../../style.css" text="Watch">
          <font>
             <Font name="Segoe UI Bold" size="18.0" />
          </font>
@@ -48,7 +48,7 @@
             <Image url="@../../../img/play-video.png" />
          </image>
       </ImageView>
-      <Button layoutX="524.0" layoutY="438.0" mnemonicParsing="false" onAction="#btnWatchLater_Clicked" prefHeight="38.0" prefWidth="200.0" style="-fx-background-color: #dca523;" styleClass="my-button" stylesheets="@../../../style.css" text="Add to Watch Later">
+      <Button layoutX="524.0" layoutY="438.0" mnemonicParsing="false" onAction="#btnWatchLater_Clicked" prefHeight="38.0" prefWidth="200.0" stylesheets="@../../../style.css" text="Add to Watch Later">
          <font>
             <Font name="Segoe UI Bold" size="15.0" />
          </font>
@@ -234,7 +234,7 @@
       <Separator layoutX="23.0" layoutY="430.0" prefHeight="23.0" prefWidth="486.0" />
       <ScrollPane layoutX="23.0" layoutY="472.0" prefHeight="172.0" prefWidth="486.0">
          <content>
-            <HBox fx:id="CardLayout" prefHeight="156.0" prefWidth="554.0" style="-fx-background-color: #28252e;" />
+            <HBox fx:id="CardLayout" prefHeight="156.0" prefWidth="554.0" spacing="20.0" style="-fx-background-color: #28252e;" />
          </content>
       </ScrollPane>
       <Label layoutX="29.0" layoutY="451.0" prefHeight="22.0" prefWidth="75.0" style="-fx-font-family: Droid Arabic Kufi;" text="Cast" textFill="WHITE">

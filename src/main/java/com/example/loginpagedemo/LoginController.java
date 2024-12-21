@@ -13,17 +13,12 @@ import javafx.stage.Stage;
 import watchIt.User;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginController {
 
     @FXML
-    private Button btnSignIn;
-
-    @FXML
     private CheckBox cbShowPassword;
-
-    @FXML
-    private Hyperlink hlSignUp;
 
     @FXML
     private PasswordField pfPassword;
@@ -36,7 +31,7 @@ public class LoginController {
 
 
 
-    public void btnSignIn_Clicked(ActionEvent e) throws IOException {
+    public void btnSignIn_Clicked(ActionEvent e) {
 
         String Username = tfUsername.getText();
         String Password = pfPassword.getText();
@@ -46,12 +41,18 @@ public class LoginController {
             return;
         }
 
+        if (Username.equalsIgnoreCase(Global.Admin.getUsername()) && Password.equalsIgnoreCase(Global.Admin.getPassword())) {
+            Display(e, "Admin.fxml");
+            return;
+        }
+
         User user;
         try {
             user = User.Find(Username, Password);
         }
         catch (Exception ex) {
-            user = null;
+            System.out.println("Failed in Find method" + ex.getMessage());
+            return;
         }
 
         if (user != null) {
@@ -63,22 +64,11 @@ public class LoginController {
         }
 
         Global.CurrentUser = user;
-
         if (user.hasValidSups()) {
-            Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            Display(e, "Main.fxml");
         }
         else {
-            Parent root = FXMLLoader.load(getClass().getResource("Supscription.fxml"));
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-
+            Display(e,"Subscription.fxml");
         }
 
     }
@@ -97,12 +87,19 @@ public class LoginController {
     }
 
     @FXML
-    void hlSignIn_Clicked(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    void hlSignIn_Clicked(ActionEvent event) {
+            Display(event, "SignUp.fxml");
     }
 
+    private void Display(ActionEvent event,String FILE) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(FILE)));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            MessageBox.showError("Failure", "Cannot load "+FILE+" "+ e.getMessage());
+        }
+    }
 }
