@@ -4,6 +4,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -17,7 +19,7 @@ public class User implements Serializable {
     private String LastName;
     private String Email;
 
-    private ArrayList<Movie> WatchedMovies;
+    private HashSet<Movie> WatchedMovies;
     public ArrayList<Movie> WatchLaterMovies;
     private ArrayList<UserWatchRecord> userWatchRecord;
 
@@ -96,7 +98,7 @@ public class User implements Serializable {
         FirstName = firstName;
         Password = password;
 
-        WatchedMovies = new ArrayList<>();
+        WatchedMovies = new HashSet<>();
         WatchLaterMovies = new ArrayList<>();
         userWatchRecord = new ArrayList<>();
         currentSubscription = new Subscription();
@@ -243,6 +245,13 @@ public class User implements Serializable {
     }
 
     public void WatchMovie(UserWatchRecord record) {
+
+        for (UserWatchRecord rec : userWatchRecord) {
+            if (rec.getMovie().getTitle().equalsIgnoreCase(record.getMovie().getTitle())) {
+                userWatchRecord.remove(rec);
+                break;
+            }
+        }
         userWatchRecord.add(record);
         saveUsersDataToFile();
     }
@@ -262,14 +271,47 @@ public class User implements Serializable {
         }
         return false;
     }
-    public boolean isExistInHistory(Movie movie) {
-        ArrayList<Movie> historyMovies = this.WatchedMovies;
-        for (Movie m : historyMovies) {
-            if (m.getTitle().equalsIgnoreCase(movie.getTitle()))
-                return true;
+
+    public HashSet<Movie> getHistory() {
+        HashSet<Movie> set = new HashSet<>();
+        for (UserWatchRecord rec : userWatchRecord) {
+            set.add(rec.getMovie());
         }
-        return false;
+        return set;
     }
+    public ArrayList<Movie> getWatchLater() {
+        return WatchLaterMovies;
+    }
+    public HashSet<Movie> getRecommended() {
+        List<Movie> allMovies = Movie.getAllMovies();
+        HashSet<Movie> history = getHistory();
+        HashSet<Movie> recommended = new HashSet<>();
+
+        HashSet<String> preferredGenres = new HashSet<>();
+        HashSet<Actor> preferredActors = new HashSet<>();
+
+        for (Movie watchedMovie : history) {
+            preferredGenres.add(watchedMovie.getGenre());
+            preferredActors.addAll(watchedMovie.getActors());
+        }
+
+        for (Movie movie : allMovies) {
+
+            // Skip movies already in the user's history
+            if (history.contains(movie)) {
+                continue;
+            }
+
+            boolean matchesGenre = preferredGenres.contains(movie.getGenre());
+            boolean matchesActor = movie.getActors().stream().anyMatch(preferredActors::contains);
+
+            if (matchesGenre || matchesActor) {
+                recommended.add(movie);
+            }
+        }
+        return recommended;
+    }
+
 
     public static void clearFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME))) {

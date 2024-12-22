@@ -187,4 +187,24 @@ public class MovieController implements Initializable, OnRatingClosedListener {
             btnWatch.setDisable(false);
         }
     }
+
+
+    @FXML
+    void Director_Clicked(ActionEvent event) throws IOException {
+
+
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Cast.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Get the controller and pass data to it
+        CastController controller = fxmlLoader.getController();
+        controller.setData(movie.getDirector());
+
+        // Set up the scene and stage
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

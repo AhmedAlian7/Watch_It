@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 public class Movie implements Serializable {
@@ -408,10 +409,10 @@ public class Movie implements Serializable {
         SaveMoviesToFile();
     }
 
-    public static ArrayList<Movie> Filter(String word) { // word : movie name or actor name or genre
+    public static HashSet<Movie> Filter(String word) { // word : movie name or actor name or genre
 
         ArrayList<Movie> AllMovies = LoadMovieFromFile();
-        ArrayList<Movie> FilteredMovies = new ArrayList<>();
+        HashSet<Movie> FilteredMovies = new HashSet<>();
         for (Movie movie : AllMovies)
         {
             if (movie.getTitle().toLowerCase().contains(word.toLowerCase()) || movie.getGenre().toLowerCase().contains(word.toLowerCase()))

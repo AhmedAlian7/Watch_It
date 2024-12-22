@@ -83,6 +83,7 @@ public class AddMovieController implements Initializable {
     private ImageView PosterView;
 
 
+    private ArrayList<Actor> actors;
 
     private Stage stage;
 
@@ -104,16 +105,13 @@ public class AddMovieController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
         if (DGender != null) {
             DGender.getItems().addAll(Person.enGender.Male, Person.enGender.Female);
         }
         if (AGender != null) {
             AGender.getItems().addAll(Person.enGender.Male, Person.enGender.Female);
         }
-
-
+        actors = new ArrayList<>();
     }
 
     public static Parent roota;
@@ -135,7 +133,6 @@ public class AddMovieController implements Initializable {
         stagea.showAndWait();
     }
 
-    public ArrayList<Actor> actors = new ArrayList<>();
 
     public void btn_SaveActor_Clicked(ActionEvent event) throws IOException {
 
@@ -219,7 +216,7 @@ public class AddMovieController implements Initializable {
         Director director = new Director(dfname, dlname, ddob, dgender, dnation);
 
         Movie movie = new Movie(title, genre, runningTime, budget, country, language, releaseDate, revenue, views, director, actors, selectedFile.toURI().toString());
-
+        movie.setActors(actors);
         Movie.AddNewMovie(movie);
 
         if (Movie.IsMovieExist(title)) {
@@ -231,5 +228,3 @@ public class AddMovieController implements Initializable {
 
     }
 }
-
-

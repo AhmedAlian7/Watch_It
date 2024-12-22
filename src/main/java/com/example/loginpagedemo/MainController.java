@@ -28,12 +28,12 @@ public class MainController implements Initializable {
 
     private ArrayList<Movie> recentMovies;
     private ArrayList<Movie> MostViewsMovies;
-    private ArrayList<Movie> searchedMovies;
+    private List<Movie> searchedMovies;
 
     @FXML
     private HBox CardLayout,CardLayout1;
     @FXML
-    private HBox btnHome, btnSearch, btnCategories, btnHistory, btnRecommended, btnWatchLater, btnSubsDetails;
+    private HBox btnHome, btnSearch, btnHistory, btnRecommended, btnWatchLater, btnSubsDetails;
 
     @FXML
     private GridPane srchCardLayout;
@@ -56,7 +56,7 @@ public class MainController implements Initializable {
         MostViewsMovies = Movie.getMostViewedMovie(24);
 
         lblUserName.setText(Global.CurrentUser.getFullName());
-        buttons = List.of(btnHome, btnSearch, btnCategories, btnHistory, btnWatchLater, btnRecommended,btnSubsDetails);
+        buttons = List.of(btnHome, btnSearch, btnHistory, btnWatchLater, btnRecommended,btnSubsDetails);
 
 //        pan_Home.setVisible(true);
 //        pan_Search.setVisible(false);
@@ -116,15 +116,6 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    void Categories_Clicked(MouseEvent event) {
-
-    }
-
-    @FXML
-    void History_Clicked(MouseEvent event) {
-
-    }
 
     @FXML
     void Home_Clicked(MouseEvent event) {
@@ -146,6 +137,15 @@ public class MainController implements Initializable {
         catch (IOException ex) {
             System.err.println("Failed operation, Can't get recent movies or trending movies" + ex.getMessage());
         }
+    }
+
+    @FXML
+    void btnSearch_Clicked(MouseEvent event) throws IOException {
+        Display_Search();
+    }
+    @FXML
+    void tfSearch_KeyReleasd(KeyEvent event) throws IOException {
+        Display_Search();
     }
     @FXML
     void Search_Clicked(MouseEvent event) throws IOException {
@@ -170,48 +170,6 @@ public class MainController implements Initializable {
         }
 
     }
-    @FXML
-    void Recommended_Clicked(MouseEvent event) {
-
-    }
-    @FXML
-    void WatchLater_Clicked(MouseEvent event) {
-
-    }
-    @FXML
-    void ShowSubsDetails_Clicked(MouseEvent event) {
-        if (Global.CurrentUser.hasValidSups()) {
-            try {
-                Stage stage = new Stage();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("subsDetails.fxml"));
-                Parent root = fxmlLoader.load();
-
-                // Get the controller and pass data to it
-                SubsDetailsController controller = fxmlLoader.getController();
-                controller.setData(Global.CurrentUser.getSubscription());
-
-                // Set up the scene and stage
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                MessageBox.showError("Error", "Cannot Load subsDetails.fxml "
-                + e.getMessage());
-            }
-        } else {
-            MessageBox.showWarning("Your subscription has ended",
-                    "You have to renew your subscription.");
-        }
-    }
-
-    @FXML
-    void btnSearch_Clicked(MouseEvent event) throws IOException {
-       Display_Search();
-    }
-    @FXML
-    void tfSearch_KeyReleasd(KeyEvent event) throws IOException {
-        Display_Search();
-    }
     private void Display_Search() throws IOException {
         String word = FuckingSearch.getText().trim();
         System.out.println("text changed to: " + word);
@@ -219,7 +177,7 @@ public class MainController implements Initializable {
         if (word.isEmpty())
             searchedMovies = Movie.getAllMovies();
         else
-            searchedMovies = Movie.Filter(word);
+            searchedMovies = Movie.Filter(word).stream().toList();
 
         srchCardLayout.getChildren().clear();
         int column = 0;
@@ -243,6 +201,93 @@ public class MainController implements Initializable {
 
             GridPane.setMargin(cardBox, new Insets(10));
 
+        }
+    }
+
+    @FXML
+    void History_Clicked(MouseEvent event) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserMovies.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Get the controller and pass data to it
+            UserMoviesController controller = fxmlLoader.getController();
+            controller.Display_History();
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            MessageBox.showError("Error", "Cannot Load \"UserMovies.fxml\" "
+                    + e.getMessage());
+        }
+
+    }
+
+    @FXML
+    void Recommended_Clicked(MouseEvent event) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserMovies.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Get the controller and pass data to it
+            UserMoviesController controller = fxmlLoader.getController();
+            controller.Display_Recommended();
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            MessageBox.showError("Error", "Cannot Load \"UserMovies.fxml\" "
+                    + e.getMessage());
+        }
+    }
+
+    @FXML
+    void WatchLater_Clicked(MouseEvent event) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserMovies.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Get the controller and pass data to it
+            UserMoviesController controller = fxmlLoader.getController();
+            controller.Display_WatchLater();
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            MessageBox.showError("Error", "Cannot Load \"UserMovies.fxml\" "
+                    + e.getMessage());
+        }
+    }
+
+    @FXML
+    void ShowSubsDetails_Clicked(MouseEvent event) {
+        if (Global.CurrentUser.hasValidSups()) {
+            try {
+                Stage stage = new Stage();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("subsDetails.fxml"));
+                Parent root = fxmlLoader.load();
+
+                // Get the controller and pass data to it
+                SubsDetailsController controller = fxmlLoader.getController();
+                controller.setData(Global.CurrentUser.getSubscription());
+
+                // Set up the scene and stage
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                MessageBox.showError("Error", "Cannot Load subsDetails.fxml "
+                + e.getMessage());
+            }
+        } else {
+            MessageBox.showWarning("Your subscription has ended",
+                    "You have to renew your subscription.");
         }
     }
 
