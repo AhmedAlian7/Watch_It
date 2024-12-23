@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import watchIt.Movie;
 import watchIt.Person;
@@ -104,7 +105,7 @@ public class AdminController implements Initializable {
     }
 
 
-    public void btn_Movies_Clicked(ActionEvent event) throws IOException {
+    public void btn_Movies_Clicked(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Admin.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -114,7 +115,7 @@ public class AdminController implements Initializable {
 
     }
 
-    public void btn_Users_Clicked(ActionEvent event) throws IOException {
+    public void btn_Users_Clicked(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Admin_Users.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -124,7 +125,7 @@ public class AdminController implements Initializable {
 
     }
 
-    public void btn_Subs_Clicked(ActionEvent event) throws IOException {
+    public void btn_Subs_Clicked(MouseEvent event) throws IOException {
 
         if(Msp!=null) {
             MostSubscribedPlan();
@@ -135,11 +136,10 @@ public class AdminController implements Initializable {
         stage.setScene(scene);
         stage.setTitle("Subscriptions");
         stage.show();
-
     }
 
 
-    public void btn_AddMovie_Clicked(ActionEvent event) throws IOException {
+    public void btn_AddMovie_Clicked(MouseEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMovie.fxml"));
         Parent root = loader.load();
@@ -157,17 +157,25 @@ public class AdminController implements Initializable {
 
     ArrayList<Movie> movies = Movie.CopyMovies();
     ArrayList<User> users = User.getAllUsers();
+    ArrayList<String> MrmMonths = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         ObservableList<Movie> list = FXCollections.observableArrayList(movies);
 
-        if (Id != null) {
-            Id.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        } else {
-            System.err.println("Id TableColumn is null!");
+
+        MostSubscribedPlan();
+        try {
+            MrmMonths =  MostRevenueMonth();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        if (Mrm !=null){
+            Mrm.setText("Most Revenue Month: " + MrmMonths.toString());
+        }
+
 
         if (Title != null) {
             Title.setCellValueFactory(new PropertyValueFactory<>("Title"));
@@ -238,11 +246,6 @@ public class AdminController implements Initializable {
 
         ObservableList<User> list2 = FXCollections.observableArrayList(users);
 
-        if (Uid != null) {
-            Uid.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        } else {
-            System.err.println("Id TableColumn is null!");
-        }
 
         if (Uusername != null) {
             Uusername.setCellValueFactory(new PropertyValueFactory<>("Username"));
@@ -269,7 +272,7 @@ public class AdminController implements Initializable {
         }
 
         if (Usub != null) {
-            Usub.setCellValueFactory(new PropertyValueFactory<>("SubscriptionType"));
+            Usub.setCellValueFactory(new PropertyValueFactory<>("GuiSubscription"));
         } else {
             System.err.println("SubscriptionType TableColumn is null!");
         }
@@ -351,13 +354,12 @@ public class AdminController implements Initializable {
         }
     }
 
-    public void MostSubscribedPlan()
-    {
+    public void MostSubscribedPlan() {
 
         int basic=0,standard=0,premium=0;
         for (User user : users)
         {
-            switch (user.getSubscription().getPlan()) {
+            switch (user.getCurrentSubscription().getPlan()) {
                 case Basic:
                     basic++;
                     break;
@@ -372,59 +374,124 @@ public class AdminController implements Initializable {
             }
         }
 
-        if (basic > premium && basic > standard) {
-            Msp.setText("Most Subscribed Plan: Basic");
-        } else if (standard > basic && standard > premium) {
-            Msp.setText("Most Subscribed Plan: Standard");
-        } else if (premium > basic && premium > standard) {
-            Msp.setText("Most Subscribed Plan: Premium");
-        } else if (basic == standard && basic > premium) {
-            Msp.setText("Most Subscribed Plan: Basic and Standard");
-        } else if (basic == premium && basic > standard) {
-            Msp.setText("Most Subscribed Plan: Basic and Premium");
-        } else if (standard == premium && standard > basic) {
-            Msp.setText("Most Subscribed Plan: Standard and Premium");
-        } else {
-            Msp.setText("Most Subscribed Plan: Tie between all plans");
+        if (Msp != null) {
+            if (basic > premium && basic > standard) {
+                Msp.setText("Most Subscribed Plan: Basic");
+            } else if (standard > basic && standard > premium) {
+                Msp.setText("Most Subscribed Plan: Standard");
+            } else if (premium > basic && premium > standard) {
+                Msp.setText("Most Subscribed Plan: Premium");
+            } else if (basic == standard && basic > premium) {
+                Msp.setText("Most Subscribed Plan: Basic and Standard");
+            } else if (basic == premium && basic > standard) {
+                Msp.setText("Most Subscribed Plan: Basic and Premium");
+            } else if (standard == premium && standard > basic) {
+                Msp.setText("Most Subscribed Plan: Standard and Premium");
+            } else if (basic == 0 && standard == 0 && premium == 0) {
+                Msp.setText("No Users have subscribed to any plan");
+            } else {
+                Msp.setText("Most Subscribed Plan: Tie between all plans");
+            }
+
         }
 
 
     }
 
-    public void MostRevenueMonth()
-    {
-        int basic=0,standard=0,premium=0;
-            for (User user : users) {
-                switch (user.getSubscription().getPlan()) {
-                    case Basic:
-                        basic++;
-                        break;
-                    case Standard:
-                        standard++;
-                        break;
-                    case Premium:
-                        premium++;
-                        break;
-                    default:
-                        break;
+    private Subscription.enPlan PlanofMonth  (User user,int Month){
+
+        if(!user.getSubscriptionHistory().isEmpty()) {
+            for (Subscription s : user.getSubscriptionHistory()) {
+
+                if (s.getStartDate().getMonth().getValue() == Month) {
+                    return s.getPlan();
                 }
             }
+        }
+        else if(user.getCurrentSubscription().getStartDate().getMonth().getValue()==Month)
+        {
+            return user.getCurrentSubscription().getPlan();
+        }
 
-
-        int revenue=0;
-        revenue+=(basic*Subscription.getPrices(Subscription.enPlan.Basic));
-        revenue+=(standard*Subscription.getPrices(Subscription.enPlan.Standard));
-        revenue+=(premium*Subscription.getPrices(Subscription.enPlan.Premium));
-
-
+        return Subscription.enPlan.Non;
 
     }
 
+
+    public ArrayList<String> MostRevenueMonth() throws IOException {
+
+        ArrayList<User> users = User.getAllUsers();
+
+        int [] EachMonthRevenue= new int[13];
+
+        EachMonthRevenue[0]=0;
+
+
+        for(int i=12;i<=12;i++) {
+
+            for (User user : users) {
+
+                EachMonthRevenue[i]+= Subscription.getPrices(PlanofMonth(user,i));
+
+            }
+
+        }
+
+        int max = 22;
+        for (int i = 1; i < EachMonthRevenue.length; i++) {
+            if (EachMonthRevenue[i] > max) {
+                max = EachMonthRevenue[i];
+            }
+        }
+
+        ArrayList<Integer> indices = new ArrayList<>();// indices is the month(number) which has max Revenue .
+        if(max==22)
+        {
+            indices.add(0);
+        }
+        for (int i = 0; i < EachMonthRevenue.length; i++) {
+            if (EachMonthRevenue[i] == max) {
+                indices.add(i);
+            }
+        }
+
+        ArrayList<String> months = new ArrayList<>();
+
+        for (int i = 0; i < indices.size(); i++) {
+            months.add(getMonthName(indices.get(i)));
+        }
+
+        return months;
+
+    }
+    public static String getMonthName(int month) {
+        switch (month) {
+            case 1:
+                return "January";
+            case 2:
+                return "February";
+            case 3:
+                return "March";
+            case 4:
+                return "April";
+            case 5:
+                return "May";
+            case 6:
+                return "June";
+            case 7:
+                return "July";
+            case 8:
+                return "August";
+            case 9:
+                return "September";
+            case 10:
+                return "October";
+            case 11:
+                return "November";
+            case 12:
+                return "December";
+            default:
+                return "No Users";
+        }
+    }
 }
-
-
-
-
-
-
-

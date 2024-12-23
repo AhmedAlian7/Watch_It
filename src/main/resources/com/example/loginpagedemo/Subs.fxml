@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -33,7 +31,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" onMouseClicked="#btn_Movies_Clicked" prefHeight="50.0" prefWidth="289.0" styleClass="selected" stylesheets="@../../../../../../../Watch_It_Final/src/main/resources/style.css">
+            <HBox alignment="CENTER" onMouseClicked="#btn_Movies_Clicked" prefHeight="50.0" prefWidth="289.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -67,7 +65,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" onMouseClicked="#btn_Subs_Clicked" prefHeight="50.0" prefWidth="289.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
+            <HBox alignment="CENTER" onMouseClicked="#btn_Subs_Clicked" prefHeight="50.0" prefWidth="289.0" stylesheets="@../../../style.css">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -83,6 +81,10 @@
                      </padding>
                   </Label>
                </children>
+               <styleClass>
+                  <String fx:value="mouse-moved" />
+                  <String fx:value="selected" />
+               </styleClass>
             </HBox>
             <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" onMouseClicked="#btn_AddMovie_Clicked" prefHeight="50.0" prefWidth="289.0" styleClass="mouse-moved" stylesheets="@../../../style.css">
@@ -120,29 +122,18 @@
       </HBox>
    </top>
    <center>
-      <TableView fx:id="MoviesView" prefHeight="706.0" prefWidth="998.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="Title" prefWidth="100.0" text="Title" />
-            <TableColumn fx:id="Genre" prefWidth="100.0" text="Genre" />
-            <TableColumn fx:id="RunningTime" prefWidth="100.0" text="RunningTime" />
-            <TableColumn fx:id="Budget" prefWidth="100.0" text="Budget" />
-            <TableColumn fx:id="Country" prefWidth="100.0" text="Country" />
-            <TableColumn fx:id="Language" prefWidth="100.0" text="Language" />
-            <TableColumn fx:id="ReleaseDate" prefWidth="100.0" text="ReleaseDate" />
-            <TableColumn fx:id="Revenue" prefWidth="100.0" text="Revenue" />
-            <TableColumn fx:id="Views" prefWidth="100.0" text="Views" />
-        </columns>
-         <contextMenu>
-            <ContextMenu fx:id="contextMenu">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#Deletemovie" text="Delete" />
-                  <MenuItem mnemonicParsing="false" text="Edit" />
-              </items>
-            </ContextMenu>
-         </contextMenu>
-      </TableView>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="Msp" layoutX="95.0" layoutY="85.0" prefHeight="40.0" prefWidth="917.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="Mrm" layoutX="95.0" layoutY="201.0" prefHeight="40.0" prefWidth="921.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
    </center>
-   <right>
-      <VBox prefHeight="724.0" prefWidth="22.0" styleClass="transparent" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>

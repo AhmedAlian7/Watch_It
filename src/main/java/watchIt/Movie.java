@@ -551,6 +551,11 @@ public class Movie implements Serializable {
         return new ArrayList<>(filteredMovies);
     }
 
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Movie movie = (Movie) obj;
+        return Id == movie.Id;
+    }
 }

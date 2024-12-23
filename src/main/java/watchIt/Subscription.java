@@ -43,13 +43,6 @@ public class Subscription implements Serializable {
         StartDate = startDate;
         initializePlanDetails();
     }
-    public Subscription() {
-        this.subscriptionId = UUID.randomUUID();
-        this.Plan = enPlan.Non;
-        this.StartDate = LocalDate.now();
-        initializePlanDetails();
-    }
-
 
     private void setPrice() {
         switch (Plan) {
@@ -78,7 +71,7 @@ public class Subscription implements Serializable {
                 return 50;
             }
             default -> {
-                return -1 ;
+                return 0 ;
             }
         }
     }
