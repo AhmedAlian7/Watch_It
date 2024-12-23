@@ -139,6 +139,7 @@ public class MainController implements Initializable {
         }
     }
 
+    private Filters filters;
     @FXML
     void btnSearch_Clicked(MouseEvent event) throws IOException {
         Display_Search();
@@ -152,15 +153,6 @@ public class MainController implements Initializable {
         pan_Home.setVisible(false);
         pan_Search.setVisible(true);
 
-        btnSearch.getStyleClass().addAll("selected", "mouse-moved");
-        buttons.stream()
-                .filter(b -> b != btnSearch)
-                .forEach(b -> {
-                    b.getStyleClass().remove("selected");
-                    if (!b.getStyleClass().contains("mouse-moved")) {
-                        b.getStyleClass().add("mouse-moved");
-                    }
-                });
         try {
             searchedMovies = new ArrayList<>(Movie.getAllMovies());
             Display_Search();
@@ -179,6 +171,52 @@ public class MainController implements Initializable {
         else
             searchedMovies = Movie.Filter(word).stream().toList();
 
+        srchCardLayout.getChildren().clear();
+        int column = 0;
+        int row = 0;
+        for (Movie value : searchedMovies) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("Card.fxml"));
+            VBox cardBox = fxmlLoader.load();
+
+            MovieCardController cardController = fxmlLoader.getController();
+            cardController.setData(value);
+
+            srchCardLayout.add(cardBox, column, row);
+
+            column++;
+
+            if (column == 5) {
+                column = 0;
+                row++;
+            }
+
+            GridPane.setMargin(cardBox, new Insets(10));
+
+        }
+    }
+    @FXML
+    void filter_Clicked(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Filter.fxml"));
+        Parent root = loader.load();
+
+        FilterController filterController = loader.getController();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Filter");
+        stage.showAndWait();
+
+        // Get selected filters
+        filters = filterController.selectedFilters();
+
+        if (filters != null) {
+            searchedMovies = Movie.FilterWithCriteria(filters);
+            Update();
+        }
+    }
+    private void Update() throws IOException {
         srchCardLayout.getChildren().clear();
         int column = 0;
         int row = 0;
@@ -290,5 +328,8 @@ public class MainController implements Initializable {
                     "You have to renew your subscription.");
         }
     }
+
+
+
 
 }

@@ -1,11 +1,16 @@
 package watchIt;
 
+import com.example.loginpagedemo.FilterController;
+import com.example.loginpagedemo.Filters;
+import com.example.loginpagedemo.Filters;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Movie implements Serializable {
 
@@ -31,7 +36,6 @@ public class Movie implements Serializable {
 
     private float OldRatings;
     private int noofwatched;
-
 
 
     public ArrayList<Actor> getActors() {
@@ -475,5 +479,78 @@ public class Movie implements Serializable {
             System.err.println("Error while clearing movies file: " + e.getMessage());
         }
     }
+
+    public static List<Movie> FilterWithCriteria(Filters filters) {
+        List<Movie> AllMovies = new ArrayList<>(getAllMovies());
+        HashSet<Movie> filteredMovies = new HashSet<>();
+
+        for (Movie movie : AllMovies) {
+            boolean matches = true;
+
+
+            if (filters.getDuration() != null) { // Apply Duration Filter
+                switch (filters.getDuration()) {
+                    case LESS_THAN_HOUR -> {
+                        if (!(movie.getRunningTime() < 60)) {
+                            matches = false;
+                        }
+                    }
+                    case LESS_THAN_TWO_HOURS -> {
+                        if (!(movie.getRunningTime() >= 60 && movie.getRunningTime() < 120)) {
+                            matches = false;
+                        }
+                    }
+                    case MORE_THAN_TWO_HOURS -> {
+                        if (!(movie.getRunningTime() >= 120)) {
+                            matches = false;
+                        }
+                    }
+                }
+            }
+
+
+            if (filters.getRating() != null) { // Apply Rating Filter
+                switch (filters.getRating()) {
+                    case ABOVE_3 -> {
+                        if (!(movie.getRating() > 3.0f)) {
+                            matches = false;
+                        }
+                    }
+                    case ABOVE_4 -> {
+                        if (!(movie.getRating() > 4.0f)) {
+                            matches = false;
+                        }
+                    }
+                }
+            }
+
+            if (filters.getLanguage() != null) { // Apply Language Filter
+                switch (filters.getLanguage()) {
+                    case ENGLISH -> {
+                        if (!movie.getLanguage().equalsIgnoreCase("English")) {
+                            matches = false;
+                        }
+                    }
+                    case ARABIC -> {
+                        if (!movie.getLanguage().equalsIgnoreCase("Arabic")) {  // If language is not Arabic, exclude it
+                            matches = false;
+                        }
+                    }
+                    case OTHERS -> {
+                        if (movie.getLanguage().equalsIgnoreCase("English") || movie.getLanguage().equalsIgnoreCase("Arabic")) {
+                            matches = false;
+                        }
+                    }
+                }
+            }
+            if (matches) {
+                filteredMovies.add(movie);
+            }
+        }
+
+        return new ArrayList<>(filteredMovies);
+    }
+
+
 
 }

@@ -62,3 +62,23 @@
 .Button-Orange{
 -fx-background-color: #B48424;
 }
+
+
+.filter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #606060; /* Gray text color */
+  font-size: 14px; /* Similar font size */
+  font-weight: 500; /* Slightly bold text */
+  padding: 6px 12px; /* Inner spacing */
+  border: 1px solid #d3d3d3; /* Border matching the button */
+  border-radius: 50px; /* Rounded corners */
+  cursor: pointer; /* Pointer on hover */
+  white-space: nowrap; /* Prevent text wrapping */
+  transition: background-color 0.2s, color 0.2s; /* Smooth hover effect */
+}
+
+.filter-button:hover {
+  background-color: #e0e0e0; /* Slightly darker gray on hover */
+}

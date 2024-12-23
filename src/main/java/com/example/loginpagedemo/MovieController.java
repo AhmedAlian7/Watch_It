@@ -107,7 +107,6 @@ public class MovieController implements Initializable, OnRatingClosedListener {
     void btnWatch_Clicked(ActionEvent event) throws IOException {
 
         ShowRatingScreen();
-
         //RefreshMovie();
     }
     @Override

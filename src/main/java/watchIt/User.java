@@ -219,14 +219,16 @@ public class User implements Serializable {
         return true;
     }
 
-    public void DecrementLimitByOne(){
-        if (limitMovies >= 0) {
-            this.limitMovies--;
+    public void DecrementLimitByOne(Movie movie){
+        if (!isMovieWatchedInCurrentSubscription(movie)) {
+            if (limitMovies >= 0) {
+                this.limitMovies--;
+            }
+            else {
+                createNewSups(null);
+            }
+            saveUsersDataToFile();
         }
-        else {
-            createNewSups(null);
-        }
-        saveUsersDataToFile();
     }
     public Boolean hasValidSups() {
         if (currentSubscription == null) return false;
@@ -268,6 +270,16 @@ public class User implements Serializable {
         for (Movie m : watchLater) {
             if (m.getTitle().equalsIgnoreCase(movie.getTitle()))
                 return true;
+        }
+        return false;
+    }
+    private boolean isMovieWatchedInCurrentSubscription(Movie movie) {
+        ArrayList<UserWatchRecord> history = userWatchRecord;
+        for (UserWatchRecord record : history) {
+            if (record.getMovie().getTitle().equalsIgnoreCase(movie.getTitle())) {
+                if (record.getSubscription().equals(this.currentSubscription))
+                    return true;
+            }
         }
         return false;
     }

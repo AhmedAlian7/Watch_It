@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import watchIt.*;
 
@@ -14,6 +15,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 public class HelloApplication extends Application {
     @Override
@@ -22,6 +24,8 @@ public class HelloApplication extends Application {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Login.fxml")));
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setTitle("Watch It");
+            stage.getIcons().add(new Image("watchit.jpeg"));
             stage.show();
         } catch (IOException e) {
             System.err.println("Failed at load \"Login.fxml\" file");

@@ -11,11 +11,15 @@ public class UserWatchRecord implements Serializable {
     private LocalDate watchDate;
     private Integer rating;
 
-    public UserWatchRecord(int userId, Movie movie, LocalDate watchDate, Integer rating) {
+
+    private Subscription subscription;
+
+    public UserWatchRecord(int userId, Movie movie, LocalDate watchDate, Integer rating, Subscription subscription) {
         this.userId = userId;
         this.movie = movie;
         this.watchDate = watchDate;
         this.rating = rating;
+        this.subscription = subscription;
     }
 
     public int getUserId() {
@@ -47,6 +51,13 @@ public class UserWatchRecord implements Serializable {
         }
     }
 
+    public Subscription getSubscription() {
+        return subscription;
+    }
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
+
     public static void saveWatchRecordsToFile(List<UserWatchRecord> watchRecords) {
         File file = new File("UserWatchRecords.txt");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -64,4 +75,5 @@ public class UserWatchRecord implements Serializable {
         }
         return new ArrayList<>();
     }
+
 }
