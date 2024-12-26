@@ -359,18 +359,18 @@ public class AdminController implements Initializable {
         int basic=0,standard=0,premium=0;
         for (User user : users)
         {
-            switch (user.getCurrentSubscription().getPlan()) {
-                case Basic:
-                    basic++;
-                    break;
-                case Standard:
-                    standard++;
-                    break;
-                case Premium:
-                    premium++;
-                    break;
-                default:
-                    break;
+            if (user.getCurrentSubscription() != null) {
+                switch (user.getCurrentSubscription().getPlan()) {
+                    case Basic:
+                        basic++;
+                        break;
+                    case Standard:
+                        standard++;
+                        break;
+                    case Premium:
+                        premium++;
+                        break;
+                }
             }
         }
 
@@ -400,17 +400,19 @@ public class AdminController implements Initializable {
 
     private Subscription.enPlan PlanofMonth  (User user,int Month){
 
-        if(!user.getSubscriptionHistory().isEmpty()) {
-            for (Subscription s : user.getSubscriptionHistory()) {
+        if (user.getCurrentSubscription() != null) {
+            if(!user.getSubscriptionHistory().isEmpty()) {
+                for (Subscription s : user.getSubscriptionHistory()) {
 
-                if (s.getStartDate().getMonth().getValue() == Month) {
-                    return s.getPlan();
+                    if (s.getStartDate().getMonth().getValue() == Month) {
+                        return s.getPlan();
+                    }
                 }
             }
-        }
-        else if(user.getCurrentSubscription().getStartDate().getMonth().getValue()==Month)
-        {
-            return user.getCurrentSubscription().getPlan();
+            else if(user.getCurrentSubscription().getStartDate().getMonth().getValue()==Month)
+            {
+                return user.getCurrentSubscription().getPlan();
+            }
         }
 
         return Subscription.enPlan.Non;
@@ -421,13 +423,11 @@ public class AdminController implements Initializable {
     public ArrayList<String> MostRevenueMonth() throws IOException {
 
         ArrayList<User> users = User.getAllUsers();
-
         int [] EachMonthRevenue= new int[13];
 
         EachMonthRevenue[0]=0;
 
-
-        for(int i=12;i<=12;i++) {
+        for(int i=1;i<=12;i++) {
 
             for (User user : users) {
 

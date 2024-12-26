@@ -182,7 +182,7 @@ public class Movie implements Serializable {
         Revenue = revenue;
         Views = views;
     }
-    public Movie(String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate ,String posterSrc, Director director , ArrayList<Actor> actors ) {
+        public Movie(String title, String genre, int runningTime, float budget, String country, String language, LocalDate releaseDate ,String posterSrc, Director director , ArrayList<Actor> actors ) {
         Id = count++;
         Title = title;
         Genre = genre;

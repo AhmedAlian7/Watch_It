@@ -138,7 +138,9 @@ public class MovieController implements Initializable, OnRatingClosedListener {
 
         // Set director
         if (movie.getDirector() != null) {
-            lblDirectorName.setText(movie.getDirector().getFullName());
+            if (movie.getDirector().getFullName() != null) {
+                lblDirectorName.setText(movie.getDirector().getFullName());
+            }
         }
 
         // Load poster image

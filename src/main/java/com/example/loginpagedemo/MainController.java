@@ -164,7 +164,6 @@ public class MainController implements Initializable {
     }
     private void Display_Search() throws IOException {
         String word = FuckingSearch.getText().trim();
-        System.out.println("text changed to: " + word);
 
         if (word.isEmpty())
             searchedMovies = Movie.getAllMovies();
@@ -174,6 +173,19 @@ public class MainController implements Initializable {
         srchCardLayout.getChildren().clear();
         int column = 0;
         int row = 0;
+
+// Set row and column constraints to remove extra space dynamically
+        srchCardLayout.getRowConstraints().clear();
+        srchCardLayout.getColumnConstraints().clear();
+
+// Define the height of each row based on the movie card height
+        int movieCardHeight = 280;
+
+// Assuming a width of 5 columns
+        int totalColumns = 5;
+        double spacing = 10.0; // Margin between cards
+
+// Loop through the movies and add them to the grid pane
         for (Movie value : searchedMovies) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("Card.fxml"));
@@ -186,14 +198,29 @@ public class MainController implements Initializable {
 
             column++;
 
-            if (column == 5) {
+            if (column == totalColumns) {
                 column = 0;
                 row++;
             }
 
-            GridPane.setMargin(cardBox, new Insets(10));
-
+            GridPane.setMargin(cardBox, new Insets(spacing));
         }
+
+// Set constraints dynamically for proper layout
+        for (int i = 0; i < totalColumns; i++) {
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setPercentWidth(100.0 / totalColumns);
+            srchCardLayout.getColumnConstraints().add(columnConstraints);
+        }
+
+        for (int i = 0; i <= row; i++) {
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setMinHeight(movieCardHeight + spacing);
+            rowConstraints.setVgrow(Priority.NEVER); // Avoid stretching vertically
+            srchCardLayout.getRowConstraints().add(rowConstraints);
+        }
+
+
     }
     @FXML
     void filter_Clicked(ActionEvent event) throws IOException {
@@ -330,6 +357,21 @@ public class MainController implements Initializable {
     }
 
 
+    @FXML
+    void Logout_Clicked(MouseEvent event) {
+        try {
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            Parent root = loader.load();
+
+            Stage loginStage = new Stage();
+            loginStage.setScene(new Scene(root));
+            loginStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
