@@ -1,4 +1,4 @@
-# Movie Streaming Platform
+# Movie Browsing Platform
 
 ## Project Highlights
 
